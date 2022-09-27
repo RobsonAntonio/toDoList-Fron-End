@@ -49,27 +49,29 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const isAuthenticated = !!user;
 
   useEffect(() => {
-    const { "@notes.token": token } = parseCookies();
+    async function teste() {
+      const { "@notes.token": token } = parseCookies();
 
-    if (token) {
-      api
-        .get("/me")
-        .then((response) => {
-          const { id, name, email } = response.data;
+      if (token) {
+        const response = await api
+          .get("/me")
+          .then((response) => {
+            const { id, name, email } = response.data;
 
-          setUser({
-            id,
-            name,
-            email,
+            setUser({
+              id,
+              name,
+              email,
+            });
+          })
+          .catch(() => {
+            signOut();
           });
-        })
-        .catch(() => {
-          signOut();
-        });
+      }
     }
-  }, []);
-  console.log(user);
 
+    teste();
+  }, []);
   async function signIn({ email, password }: SignInProps) {
     try {
       const response = await api.post("/session", {

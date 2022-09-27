@@ -21,7 +21,10 @@ interface ListTarefasProps {
 export default function Dashboard({ listTarefas }: ListTarefasProps) {
   const { user } = useContext(AuthContext);
   const [name, setName] = useState("");
+  const [id, setId] = useState<any>();
   const [tarefas, setTarefas] = useState(listTarefas || []);
+
+  console.log(id);
 
   async function handleRegister(event: FormEvent) {
     event.preventDefault();
@@ -40,6 +43,21 @@ export default function Dashboard({ listTarefas }: ListTarefasProps) {
     toast.success("Tarefa cadastrada com sucesso!");
     setName("");
     window.location.reload();
+  }
+
+  useEffect(() => {
+    if (user && user.id) {
+      setId(user.id);
+      list();
+    }
+  }, [user]);
+
+  async function list() {
+    //console.log(tarefa);
+    const apiClient = setupAPIClient();
+    const response = await apiClient.get(`/listTarefas?tarefasId=${id}`);
+
+    setTarefas(response.data);
   }
 
   return (
@@ -66,20 +84,15 @@ export default function Dashboard({ listTarefas }: ListTarefasProps) {
         </form>
       </main>
 
-      <ListTarefas tarefa={tarefas} />
+      {tarefas.length === 0 ? (
+        <main className={styles.container}>
+          <h1 className={styles.textName}>
+            Sua lista de tarefas está vazia no momento...
+          </h1>
+        </main>
+      ) : (
+        <ListTarefas tarefa={tarefas} />
+      )}
     </>
   );
 }
-
-// export const getServerSideProps = canSSRAuth(async (ctx) => {
-//   const { user } = useContext(AuthContext);
-
-//   const apiClient = setupAPIClient(ctx);
-
-//   const response = await apiClient.get(`/listTarefas?tarefasId=${user.id}`);
-//   return {
-//     props: {
-//       listTarefas: response.data,
-//     },
-//   };
-// });
