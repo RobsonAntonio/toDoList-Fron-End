@@ -1,0 +1,51 @@
+.headerContainer{
+  height: 5rem;
+}
+
+.headerContent{
+  max-width: 1120px;
+  height: 5rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  
+  img{
+    cursor: pointer;
+  }
+
+  button{
+    margin-left: 2rem;
+    background: transparent;
+    border: 0;
+    transition: transform 0.8;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+  justify-content: center;
+  
+
+
+
+  &:hover{
+  transform: scale(1.2);
+  }
+  
+  }
+
+  .text{
+   color: #FFF;
+  }
+
+  
+}
+.textName{
+  color: #FFF;
+  font-size: 16px;
+  padding-right: 10px;
+  align-items: center;
+  justify-content: center;
+ }
